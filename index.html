@@ -138,27 +138,130 @@ img {
     border-radius: 12px;
 }
 
-.install-hint {
+/* ===== INSTALL MODAL OVERLAY ===== */
+.install-overlay {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.6);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    color: #ccc;
-    z-index: 200;
-    pointer-events: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
 }
 
-@media (max-width: 900px) {
-    .glass {
-        width: 90vw;
-        min-height: 460px;
-        padding: 30px 24px;
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.install-modal {
+    background: linear-gradient(135deg, #2d0a4a, #4a0e7e);
+    border-radius: 28px;
+    padding: 32px 40px;
+    max-width: 400px;
+    width: 85%;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.2);
+    animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
     }
-    h1 { font-size: 2.5rem; }
-    p { font-size: 1.2rem; }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.install-modal h3 {
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.install-modal p {
+    font-size: 1rem;
+    color: #e0b3ff;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.install-icon-big {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.install-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.install-btn-primary {
+    background: linear-gradient(135deg, #7209b7, #b5179e);
+    border: none;
+    padding: 12px 28px;
+    border-radius: 40px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.install-btn-primary:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 18px rgba(114,9,183,0.5);
+}
+
+.install-btn-secondary {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 12px 28px;
+    border-radius: 40px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.install-btn-secondary:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+.close-hint {
+    margin-top: 20px;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.5);
+}
+
+@media (max-width: 600px) {
+    .install-modal {
+        padding: 24px 20px;
+        width: 90%;
+    }
+    .install-modal h3 {
+        font-size: 1.4rem;
+    }
+    .install-icon-big {
+        font-size: 3rem;
+    }
+    .install-btn-primary, .install-btn-secondary {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
 }
 </style>
 </head>
@@ -194,7 +297,7 @@ img {
     </div>
     <div class="slide">
         <div class="glass">
-            <h1>Tristan Diagram</h1>
+            <h1>ER Diagram</h1>
             <img id="mainImage" src="image/image.png">
         </div>
     </div>
@@ -210,9 +313,23 @@ img {
 </div>
 
 <div class="slide-dots" id="slideDots"></div>
-<div class="install-hint">💡 Click the ⊕ icon in address bar to install</div>
+
+<!-- INSTALL MODAL OVERLAY - appears when site opens -->
+<div id="installOverlay" class="install-overlay">
+    <div class="install-modal" id="installModal">
+        <span class="install-icon-big">📱✨</span>
+        <h3>Install App</h3>
+        <p>Install this presentation on your device for offline access and a native app experience.</p>
+        <div class="install-buttons">
+            <button id="confirmInstallBtn" class="install-btn-primary">📲 Install Now</button>
+            <button id="dismissInstallBtn" class="install-btn-secondary">Not Now</button>
+        </div>
+        <p class="close-hint">Click outside this box to close</p>
+    </div>
+</div>
 
 <script>
+// ========== SLIDE NAVIGATION ==========
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
 const totalSlides = 5;
@@ -273,6 +390,7 @@ document.addEventListener('touchend', (e) => {
     if (Math.abs(diff) > 50) diff > 0 ? prevSlide() : nextSlide();
 });
 
+// Image fullscreen zoom
 function openFullscreen() {
     document.getElementById("fullscreenPage").style.display = "flex";
     document.getElementById("fullImage").src = document.getElementById("mainImage").src;
@@ -285,41 +403,193 @@ function closeFullscreen() {
 document.getElementById("mainImage").onclick = openFullscreen;
 document.getElementById("fullscreenPage").onclick = closeFullscreen;
 
-// Initialize
+// Initialize slides
 for (let i = 0; i < slides.length; i++) i === 0 ? slides[i].classList.add('active') : slides[i].classList.remove('active');
 createDots();
 currentSlide = 0;
 updateDots();
-</script>
 
-<script>
-// Create manifest.json
+// ========== INSTALL MODAL LOGIC ==========
+// Show overlay when site opens (already in HTML)
+// But we need to handle: click outside = disappear, and install logic
+
+const installOverlay = document.getElementById('installOverlay');
+const installModal = document.getElementById('installModal');
+
+// Function to close the install overlay
+function closeInstallOverlay() {
+    if (installOverlay) {
+        installOverlay.style.display = 'none';
+        installOverlay.remove(); // Remove from DOM completely
+    }
+}
+
+// Click outside the modal -> close the overlay
+// But we need to detect clicks on the overlay background, not on the modal itself
+if (installOverlay) {
+    installOverlay.addEventListener('click', (e) => {
+        // If the clicked element is the overlay itself (background), close it
+        if (e.target === installOverlay) {
+            closeInstallOverlay();
+        }
+    });
+}
+
+// Dismiss button -> close
+const dismissBtn = document.getElementById('dismissInstallBtn');
+if (dismissBtn) {
+    dismissBtn.addEventListener('click', () => {
+        closeInstallOverlay();
+    });
+}
+
+// ========== PWA INSTALL PROMPT LOGIC ==========
+let deferredPrompt = null;
+let isAppInstalled = false;
+
+// Listen for beforeinstallprompt event
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Overlay is already visible, we keep it
+    // But we can update button behavior
+    console.log('beforeinstallprompt fired - install available');
+});
+
+// Handle successful installation
+window.addEventListener('appinstalled', () => {
+    isAppInstalled = true;
+    deferredPrompt = null;
+    console.log('App was installed successfully');
+    // Auto close overlay if open
+    if (installOverlay && installOverlay.style.display !== 'none') {
+        closeInstallOverlay();
+    }
+});
+
+// Install Now button click
+const confirmInstallBtn = document.getElementById('confirmInstallBtn');
+if (confirmInstallBtn) {
+    confirmInstallBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            // Show the browser's native install prompt
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to install: ${outcome}`);
+            deferredPrompt = null;
+            // Close our custom overlay after install prompt is shown
+            closeInstallOverlay();
+        } else {
+            // Fallback: if no deferredPrompt, show instructions or just close
+            alert('Installation is available via browser menu.\n\nClick the ⊕ icon in the address bar or "Add to Home Screen" in your browser menu.');
+            closeInstallOverlay();
+        }
+    });
+}
+
+// Optional: If the user already installed the app, hide overlay immediately
+if (window.matchMedia('(display-mode: standalone)').matches) {
+    isAppInstalled = true;
+    closeInstallOverlay();
+}
+
+// Also if the user previously dismissed (we don't store state, but we can use sessionStorage to avoid showing again on refresh)
+// But requirement: show when site opens. If user clicks "Not Now" or clicks outside, it disappears.
+// No need to store permanently - that's fine.
+
+// ========== MANIFEST & SERVICE WORKER FOR PWA ==========
+// Create manifest.json dynamically
 const manifestData = {
     name: "ERD Presentation",
     short_name: "ERD Slides",
+    description: "Interactive ERD Presentation by beastIT 2A2",
     start_url: ".",
     display: "standalone",
     theme_color: "#3a0ca3",
     background_color: "#1a002b",
-    icons: [{ src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%233a0ca3'/%3E%3Ctext x='50' y='67' text-anchor='middle' fill='white' font-size='50'%3EER%3C/text%3E%3C/svg%3E", sizes: "any", type: "image/svg+xml" }]
+    orientation: "portrait-primary",
+    icons: [
+        {
+            src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%233a0ca3'/%3E%3Ctext x='50' y='67' text-anchor='middle' fill='white' font-size='50' font-weight='bold'%3EER%3C/text%3E%3C/svg%3E",
+            sizes: "any",
+            type: "image/svg+xml",
+            purpose: "any"
+        },
+        {
+            src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAALPSURBVHgB7Z3datesCwEYRrciIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIu4kiJg563y+EiLp+3DOeRZb+pVrXQAAAAAAAAAAAAAAAAAA8A/zcDjw+Xxms9mcz+fzr3y/39lsNnPqQzkcDpPJZDKZTKbJZDKZJpPJZJpMpk6TydRlMpk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdPzBwAA///8wL+rAAAAAElFTkSuQmCC",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "any maskable"
+        }
+    ]
 };
 
+// Check if manifest already linked
+let manifestLink = document.querySelector('link[rel="manifest"]');
+if (!manifestLink) {
+    manifestLink = document.createElement('link');
+    manifestLink.rel = 'manifest';
+    document.head.appendChild(manifestLink);
+}
 const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
 const manifestURL = URL.createObjectURL(manifestBlob);
-document.querySelector('link[rel="manifest"]').href = manifestURL;
+manifestLink.href = manifestURL;
 
-// Service Worker
-const swCode = `const CACHE = 'erd-v1';
-const urls = ['.', 'index.html'];
-self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(urls))));
-self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));`;
+// Service Worker for offline capability
+const swCode = `
+const CACHE_NAME = 'erd-presentation-v2';
+const urlsToCache = [
+  '.',
+  'index.html'
+];
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+  );
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+`;
 
 const swBlob = new Blob([swCode], {type: 'application/javascript'});
 const swURL = URL.createObjectURL(swBlob);
+
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register(swURL).then(r => console.log('SW ready')).catch(e => console.log('SW failed:', e));
+    navigator.serviceWorker.register(swURL).then(reg => {
+        console.log('Service Worker registered successfully:', reg.scope);
+    }).catch(err => {
+        console.log('Service Worker registration failed:', err);
+    });
+}
+
+// Handle image error fallback
+const mainImageElem = document.getElementById('mainImage');
+if (mainImageElem) {
+    mainImageElem.onerror = function() {
+        this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"%3E%3Crect width="600" height="400" fill="%232d0a4a"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="white" font-size="24" dy=".3em"%3EER Diagram Preview%3C/text%3E%3C/svg%3E';
+    };
 }
 </script>
 </body>
 </html>
-
