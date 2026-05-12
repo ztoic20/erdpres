@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>ERD Presentation | beastIT 2A2</title>
 <meta name="theme-color" content="#3a0ca3">
-<meta name="description" content="ERD Presentation for Water Refilling Station">
+<meta name="description" content="ERD Presentation for Water Refilling Station by beastIT 2A2">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Segoe UI", system-ui, sans-serif;
+    font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
@@ -21,6 +21,7 @@ body {
     background: linear-gradient(135deg, #1a002b, #3a0ca3, #7209b7);
 }
 
+/* SLIDES - FADE TRANSITION */
 .slides {
     position: relative;
     width: 100%;
@@ -52,6 +53,7 @@ body {
     pointer-events: auto;
 }
 
+/* GLASS - UNIFORM SIZE */
 .glass {
     background: rgba(255, 255, 255, 0.08);
     border-radius: 20px;
@@ -68,6 +70,7 @@ body {
     align-items: center;
 }
 
+/* MAXIMIZED TEXT */
 h1 {
     font-size: 3.5rem;
     margin-bottom: 24px;
@@ -84,6 +87,7 @@ p {
     color: #f0e6ff;
 }
 
+/* IMAGE */
 img {
     max-width: 100%;
     max-height: 55vh;
@@ -91,6 +95,7 @@ img {
     cursor: pointer;
 }
 
+/* FULLSCREEN PAGE - Image zoom modal */
 .fullscreen-page {
     position: fixed;
     top: 0;
@@ -109,6 +114,7 @@ img {
     max-height: 95%;
 }
 
+/* Navigation dots - bottom center */
 .slide-dots {
     position: fixed;
     bottom: 25px;
@@ -136,131 +142,80 @@ img {
     background: white;
     width: 24px;
     border-radius: 12px;
+    box-shadow: 0 0 6px #b77eff;
 }
 
-/* ===== INSTALL MODAL OVERLAY ===== */
-.install-overlay {
+/* PWA Install Button - appears when app not installed */
+.install-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(114, 9, 183, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 10px 18px;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    z-index: 250;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
+
+.install-btn:hover {
+    background: rgba(114, 9, 183, 1);
+    transform: scale(1.02);
+}
+
+/* Offline indicator */
+.offline-indicator {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.install-modal {
-    background: linear-gradient(135deg, #2d0a4a, #4a0e7e);
-    border-radius: 28px;
-    padding: 32px 40px;
-    max-width: 400px;
-    width: 85%;
+    right: 0;
+    background: #ff6b6b;
+    color: white;
     text-align: center;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.2);
-    animation: slideUp 0.25s ease;
+    padding: 5px;
+    font-size: 0.8rem;
+    z-index: 300;
+    transform: translateY(-100%);
+    transition: transform 0.3s;
 }
 
-@keyframes slideUp {
-    from {
-        transform: translateY(30px);
-        opacity: 0;
+.offline-indicator.show {
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .glass {
+        width: 90vw;
+        min-height: 460px;
+        padding: 30px 24px;
     }
-    to {
-        transform: translateY(0);
-        opacity: 1;
+    h1 {
+        font-size: 2.5rem;
     }
-}
-
-.install-modal h3 {
-    color: white;
-    font-size: 1.8rem;
-    margin-bottom: 12px;
-    font-weight: 600;
-}
-
-.install-modal p {
-    font-size: 1rem;
-    color: #e0b3ff;
-    margin-bottom: 24px;
-    line-height: 1.5;
-}
-
-.install-icon-big {
-    font-size: 4rem;
-    margin-bottom: 16px;
-    display: block;
-}
-
-.install-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.install-btn-primary {
-    background: linear-gradient(135deg, #7209b7, #b5179e);
-    border: none;
-    padding: 12px 28px;
-    border-radius: 40px;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-.install-btn-primary:hover {
-    transform: scale(1.02);
-    box-shadow: 0 6px 18px rgba(114,9,183,0.5);
-}
-
-.install-btn-secondary {
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.3);
-    padding: 12px 28px;
-    border-radius: 40px;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.15s;
-}
-
-.install-btn-secondary:hover {
-    background: rgba(255,255,255,0.25);
-}
-
-.close-hint {
-    margin-top: 20px;
-    font-size: 0.7rem;
-    color: rgba(255,255,255,0.5);
+    p {
+        font-size: 1.2rem;
+    }
 }
 
 @media (max-width: 600px) {
-    .install-modal {
-        padding: 24px 20px;
-        width: 90%;
+    h1 {
+        font-size: 1.8rem;
     }
-    .install-modal h3 {
-        font-size: 1.4rem;
+    p {
+        font-size: 1rem;
     }
-    .install-icon-big {
-        font-size: 3rem;
-    }
-    .install-btn-primary, .install-btn-secondary {
-        padding: 10px 20px;
-        font-size: 0.9rem;
+    .glass {
+        min-height: 400px;
+        padding: 24px 18px;
     }
 }
 </style>
@@ -268,11 +223,14 @@ img {
 <body>
 
 <div class="slides" id="slidesContainer">
+    <!-- Slide 1 -->
     <div class="slide">
         <div class="glass">
             <h1><b>ERD Presentation</b></h1>
         </div>
     </div>
+
+    <!-- Slide 2 - Group name: beastIT 2A2 -->
     <div class="slide">
         <div class="glass">
             <h1><b>Presented by: beastIT 2A2</b></h1>
@@ -285,22 +243,115 @@ img {
             </p>
         </div>
     </div>
+
+    <!-- Slide 3 -->
     <div class="slide">
         <div class="glass">
             <h1><b>Institution: Water Refiling Station</b></h1>
             <p>
-                This shows a database system for a Water Refilling Station. It manages employees, customers, sales transactions, containers, and container history.
+                It manages employees, customers, sales transactions, containers, and container history.
                 Sales are handled by employees and linked to customers, while containers are tracked for each transaction. The system also records container status changes over time.
                 Overall, it helps organize data, track operations, and improve management efficiency.
             </p>
         </div>
     </div>
+
+    <!-- Slide 4 -->
+    <div class="slide">
+        <div class="glass">
+            <h1><b>Entities</b></h1>
+        </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide">
+        <div class="glass">
+            <h1>Employee</h1>
+            <img id="mainImage" src="1.png" alt="ER Diagram">
+        </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide">
+        <div class="glass">
+            <h1>Sales</h1>
+            <img id="mainImage" src="2.png" alt="ER Diagram">
+        </div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="slide">
+        <div class="glass">
+            <h1>Containers</h1>
+            <img id="mainImage" src="3.png" alt="ER Diagram">
+        </div>
+    </div>
+
+    <!-- Slide 8 -->
+    <div class="slide">
+        <div class="glass">
+            <h1>Customers</h1>
+            <img id="mainImage" src="4.png" alt="ER Diagram">
+        </div>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide">
+        <div class="glass">
+            <h1>Container History</h1>
+            <img id="mainImage" src="5.png" alt="ER Diagram">
+        </div>
+    </div>
+    
+     <!-- Slide 10 -->
+    <div class="slide">
+        <div class="glass">
+            <h1><b>Relationships</b></h1>
+        </div>
+    </div>
+
+    <!-- Slide 11 -->
+    <div class="slide">
+        <div class="glass">
+            <h1>Employee generates Sales</h1>
+            <img id="mainImage" src="6.png" alt="ER Diagram">
+        </div>
+    </div>
+
+    <!-- Slide 12 -->
+    <div class="slide">
+        <div class="glass">
+            <h1>Sales contains Containers</h1>
+            <img id="mainImage" src="7.png" alt="ER Diagram">
+        </div>
+    </div>
+
+    <!-- Slide 13 -->
+    <div class="slide">
+        <div class="glass">
+            <h1>Sales made by Customers</h1>
+            <img id="mainImage" src="8.png" alt="ER Diagram">
+        </div>
+    </div>
+
+    <!-- Slide 14 -->
+    <div class="slide">
+        <div class="glass">
+            <h1>Containers recorded in Container History</h1>
+            <img id="mainImage" src="9.png" alt="ER Diagram">
+        </div>
+    </div>
+
+
+    <!-- Slide 15 -->
     <div class="slide">
         <div class="glass">
             <h1>ER Diagram</h1>
-            <img id="mainImage" src="image/image.png">
+            <img id="mainImage" src="image/image.png" alt="ER Diagram">
         </div>
     </div>
+
+    <!-- Slide 16 -->
     <div class="slide">
         <div class="glass">
             <h1>Thank You!!!</h1>
@@ -308,33 +359,28 @@ img {
     </div>
 </div>
 
+<!-- Image zoom modal -->
 <div id="fullscreenPage" class="fullscreen-page">
-    <img id="fullImage">
+    <img id="fullImage" alt="Fullscreen ERD">
 </div>
 
+<!-- PWA Install Button -->
+<button id="installBtn" class="install-btn">📱 Install App</button>
+
+<!-- Offline indicator -->
+<div id="offlineIndicator" class="offline-indicator">⚠️ You are offline - presentation still works!</div>
+
+<!-- Navigation dots -->
 <div class="slide-dots" id="slideDots"></div>
 
-<!-- INSTALL MODAL OVERLAY - appears when site opens -->
-<div id="installOverlay" class="install-overlay">
-    <div class="install-modal" id="installModal">
-        <span class="install-icon-big">📱✨</span>
-        <h3>Install App</h3>
-        <p>Install this presentation on your device for offline access and a native app experience.</p>
-        <div class="install-buttons">
-            <button id="confirmInstallBtn" class="install-btn-primary">📲 Install Now</button>
-            <button id="dismissInstallBtn" class="install-btn-secondary">Not Now</button>
-        </div>
-        <p class="close-hint">Click outside this box to close</p>
-    </div>
-</div>
-
 <script>
-// ========== SLIDE NAVIGATION ==========
+// ========== SLIDE NAVIGATION (FADE TRANSITION) ==========
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
-const totalSlides = 5;
+const totalSlides = 16;
 let imageZoomActive = false;
 
+// Create navigation dots
 const dotsContainer = document.getElementById('slideDots');
 
 function createDots() {
@@ -344,14 +390,23 @@ function createDots() {
         dot.classList.add('dot');
         if (i === currentSlide) dot.classList.add('active-dot');
         dot.setAttribute('data-index', i);
-        dot.addEventListener('click', () => goToSlide(parseInt(dot.getAttribute('data-index'))));
+        dot.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (imageZoomActive) return;
+            goToSlide(parseInt(dot.getAttribute('data-index')));
+        });
         dotsContainer.appendChild(dot);
     }
 }
 
 function updateDots() {
-    document.querySelectorAll('.dot').forEach((dot, idx) => {
-        idx === currentSlide ? dot.classList.add('active-dot') : dot.classList.remove('active-dot');
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((dot, idx) => {
+        if (idx === currentSlide) {
+            dot.classList.add('active-dot');
+        } else {
+            dot.classList.remove('active-dot');
+        }
     });
 }
 
@@ -359,210 +414,287 @@ function goToSlide(index) {
     if (index < 0) index = 0;
     if (index >= totalSlides) index = totalSlides - 1;
     if (index === currentSlide) return;
+    
     slides[currentSlide].classList.remove('active');
     currentSlide = index;
     slides[currentSlide].classList.add('active');
     updateDots();
 }
 
-function nextSlide() { if (!imageZoomActive && currentSlide < totalSlides - 1) goToSlide(currentSlide + 1); }
-function prevSlide() { if (!imageZoomActive && currentSlide > 0) goToSlide(currentSlide - 1); }
+function nextSlide() {
+    if (imageZoomActive) return;
+    if (currentSlide < totalSlides - 1) {
+        goToSlide(currentSlide + 1);
+    }
+}
 
+function prevSlide() {
+    if (imageZoomActive) return;
+    if (currentSlide > 0) {
+        goToSlide(currentSlide - 1);
+    }
+}
+
+// Keyboard navigation
 document.addEventListener("keydown", (e) => {
-    if (imageZoomActive && e.key === "Escape") closeFullscreen();
+    if (imageZoomActive) {
+        if (e.key === "Escape") closeFullscreen();
+        return;
+    }
     if (e.key === "ArrowRight" || e.key === " ") nextSlide();
     if (e.key === "ArrowLeft") prevSlide();
 });
 
-let wheelTimer;
+// Wheel scroll navigation
+let wheelTimeout = null;
 window.addEventListener("wheel", (e) => {
     if (imageZoomActive) return;
-    if (wheelTimer) return;
-    e.deltaY > 0 ? nextSlide() : prevSlide();
-    wheelTimer = setTimeout(() => wheelTimer = null, 200);
+    if (wheelTimeout) return;
+    if (e.deltaY > 0) {
+        nextSlide();
+        wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 200);
+    } else if (e.deltaY < 0) {
+        prevSlide();
+        wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 200);
+    }
 });
 
-let touchStart = 0;
-document.addEventListener('touchstart', (e) => { if (!imageZoomActive) touchStart = e.changedTouches[0].screenX; });
+// Touch swipe for mobile
+let touchStartX = 0;
+let touchEndX = 0;
+document.addEventListener('touchstart', (e) => {
+    if (imageZoomActive) return;
+    touchStartX = e.changedTouches[0].screenX;
+});
 document.addEventListener('touchend', (e) => {
     if (imageZoomActive) return;
-    let diff = e.changedTouches[0].screenX - touchStart;
-    if (Math.abs(diff) > 50) diff > 0 ? prevSlide() : nextSlide();
+    touchEndX = e.changedTouches[0].screenX;
+    const threshold = 50;
+    if (touchEndX < touchStartX - threshold) {
+        nextSlide();
+    } else if (touchEndX > touchStartX + threshold) {
+        prevSlide();
+    }
 });
 
-// Image fullscreen zoom
+// Image zoom functionality
 function openFullscreen() {
-    document.getElementById("fullscreenPage").style.display = "flex";
-    document.getElementById("fullImage").src = document.getElementById("mainImage").src;
+    const fullscreenDiv = document.getElementById("fullscreenPage");
+    const fullImg = document.getElementById("fullImage");
+    const mainImg = document.getElementById("mainImage");
+    if (mainImg && mainImg.src) {
+        fullImg.src = mainImg.src;
+    }
+    fullscreenDiv.style.display = "flex";
     imageZoomActive = true;
+    document.body.style.overflow = 'hidden';
 }
+
 function closeFullscreen() {
     document.getElementById("fullscreenPage").style.display = "none";
     imageZoomActive = false;
+    document.body.style.overflow = '';
 }
+
 document.getElementById("mainImage").onclick = openFullscreen;
 document.getElementById("fullscreenPage").onclick = closeFullscreen;
 
-// Initialize slides
-for (let i = 0; i < slides.length; i++) i === 0 ? slides[i].classList.add('active') : slides[i].classList.remove('active');
-createDots();
-currentSlide = 0;
-updateDots();
-
-// ========== INSTALL MODAL LOGIC ==========
-// Show overlay when site opens (already in HTML)
-// But we need to handle: click outside = disappear, and install logic
-
-const installOverlay = document.getElementById('installOverlay');
-const installModal = document.getElementById('installModal');
-
-// Function to close the install overlay
-function closeInstallOverlay() {
-    if (installOverlay) {
-        installOverlay.style.display = 'none';
-        installOverlay.remove(); // Remove from DOM completely
-    }
-}
-
-// Click outside the modal -> close the overlay
-// But we need to detect clicks on the overlay background, not on the modal itself
-if (installOverlay) {
-    installOverlay.addEventListener('click', (e) => {
-        // If the clicked element is the overlay itself (background), close it
-        if (e.target === installOverlay) {
-            closeInstallOverlay();
+// Initialize
+function initializeSlides() {
+    for (let i = 0; i < slides.length; i++) {
+        if (i === 0) {
+            slides[i].classList.add('active');
+        } else {
+            slides[i].classList.remove('active');
         }
+    }
+    createDots();
+    currentSlide = 0;
+    updateDots();
+}
+initializeSlides();
+
+// ========== PWA: SERVICE WORKER REGISTRATION ==========
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then(registration => {
+            console.log('Service Worker registered successfully:', registration.scope);
+        }).catch(error => {
+            console.log('Service Worker registration failed:', error);
+        });
     });
 }
 
-// Dismiss button -> close
-const dismissBtn = document.getElementById('dismissInstallBtn');
-if (dismissBtn) {
-    dismissBtn.addEventListener('click', () => {
-        closeInstallOverlay();
-    });
-}
+// ========== PWA: INSTALL PROMPT ==========
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
 
-// ========== PWA INSTALL PROMPT LOGIC ==========
-let deferredPrompt = null;
-let isAppInstalled = false;
-
-// Listen for beforeinstallprompt event
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    // Overlay is already visible, we keep it
-    // But we can update button behavior
-    console.log('beforeinstallprompt fired - install available');
+    installBtn.style.display = 'flex';
+    console.log('Install prompt available');
 });
 
-// Handle successful installation
-window.addEventListener('appinstalled', () => {
-    isAppInstalled = true;
-    deferredPrompt = null;
-    console.log('App was installed successfully');
-    // Auto close overlay if open
-    if (installOverlay && installOverlay.style.display !== 'none') {
-        closeInstallOverlay();
+installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response to install: ${outcome}`);
+        deferredPrompt = null;
+        installBtn.style.display = 'none';
     }
 });
 
-// Install Now button click
-const confirmInstallBtn = document.getElementById('confirmInstallBtn');
-if (confirmInstallBtn) {
-    confirmInstallBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            // Show the browser's native install prompt
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`User response to install: ${outcome}`);
-            deferredPrompt = null;
-            // Close our custom overlay after install prompt is shown
-            closeInstallOverlay();
-        } else {
-            // Fallback: if no deferredPrompt, show instructions or just close
-            alert('Installation is available via browser menu.\n\nClick the ⊕ icon in the address bar or "Add to Home Screen" in your browser menu.');
-            closeInstallOverlay();
-        }
-    });
+// Hide install button if app is already installed
+window.addEventListener('appinstalled', () => {
+    installBtn.style.display = 'none';
+    deferredPrompt = null;
+    console.log('PWA installed successfully');
+});
+
+// ========== OFFLINE DETECTION ==========
+const offlineIndicator = document.getElementById('offlineIndicator');
+
+function updateOnlineStatus() {
+    if (!navigator.onLine) {
+        offlineIndicator.classList.add('show');
+        setTimeout(() => {
+            offlineIndicator.classList.remove('show');
+        }, 3000);
+    }
 }
 
-// Optional: If the user already installed the app, hide overlay immediately
-if (window.matchMedia('(display-mode: standalone)').matches) {
-    isAppInstalled = true;
-    closeInstallOverlay();
+window.addEventListener('online', () => {
+    offlineIndicator.style.background = '#4caf50';
+    offlineIndicator.textContent = '✅ Back online!';
+    offlineIndicator.classList.add('show');
+    setTimeout(() => {
+        offlineIndicator.classList.remove('show');
+        setTimeout(() => {
+            offlineIndicator.style.background = '#ff6b6b';
+            offlineIndicator.textContent = '⚠️ You are offline - presentation still works!';
+        }, 500);
+    }, 2000);
+});
+
+window.addEventListener('offline', () => {
+    offlineIndicator.style.background = '#ff6b6b';
+    offlineIndicator.textContent = '⚠️ You are offline - presentation still works!';
+    offlineIndicator.classList.add('show');
+    setTimeout(() => {
+        offlineIndicator.classList.remove('show');
+    }, 3000);
+});
+
+// Check initial status
+if (!navigator.onLine) {
+    offlineIndicator.classList.add('show');
+    setTimeout(() => {
+        offlineIndicator.classList.remove('show');
+    }, 3000);
 }
 
-// Also if the user previously dismissed (we don't store state, but we can use sessionStorage to avoid showing again on refresh)
-// But requirement: show when site opens. If user clicks "Not Now" or clicks outside, it disappears.
-// No need to store permanently - that's fine.
-
-// ========== MANIFEST & SERVICE WORKER FOR PWA ==========
-// Create manifest.json dynamically
-const manifestData = {
-    name: "ERD Presentation",
-    short_name: "ERD Slides",
-    description: "Interactive ERD Presentation by beastIT 2A2",
-    start_url: ".",
-    display: "standalone",
-    theme_color: "#3a0ca3",
-    background_color: "#1a002b",
-    orientation: "portrait-primary",
-    icons: [
-        {
-            src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%233a0ca3'/%3E%3Ctext x='50' y='67' text-anchor='middle' fill='white' font-size='50' font-weight='bold'%3EER%3C/text%3E%3C/svg%3E",
-            sizes: "any",
-            type: "image/svg+xml",
-            purpose: "any"
-        },
-        {
-            src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAALPSURBVHgB7Z3datesCwEYRrciIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIu4kiJg563y+EiLp+3DOeRZb+pVrXQAAAAAAAAAAAAAAAAAA8A/zcDjw+Xxms9mcz+fzr3y/39lsNnPqQzkcDpPJZDKZTKbJZDKZJpPJZJpMpk6TydRlMpk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdPzBwAA///8wL+rAAAAAElFTkSuQmCC",
-            sizes: "192x192",
-            type: "image/png",
-            purpose: "any maskable"
-        }
-    ]
-};
-
-// Check if manifest already linked
-let manifestLink = document.querySelector('link[rel="manifest"]');
-if (!manifestLink) {
-    manifestLink = document.createElement('link');
-    manifestLink.rel = 'manifest';
-    document.head.appendChild(manifestLink);
+// Handle image error (fallback)
+const mainImage = document.getElementById('mainImage');
+if (mainImage) {
+    mainImage.onerror = function() {
+        this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"%3E%3Crect width="400" height="300" fill="%232d0a4a"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="white" font-size="20" dy=".3em"%3EER Diagram Preview%3C/text%3E%3C/svg%3E';
+    };
 }
-const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
-const manifestURL = URL.createObjectURL(manifestBlob);
-manifestLink.href = manifestURL;
+</script>
 
-// Service Worker for offline capability
-const swCode = `
-const CACHE_NAME = 'erd-presentation-v2';
+<!-- Dynamically generate manifest.json and sw.js -->
+<script>
+// Generate manifest.json dynamically
+(function generateManifest() {
+    const manifest = {
+        name: "ERD Presentation",
+        short_name: "ERD Slides",
+        description: "Interactive ERD Presentation by beastIT 2A2",
+        start_url: ".",
+        display: "standalone",
+        theme_color: "#3a0ca3",
+        background_color: "#1a002b",
+        orientation: "any",
+        icons: [
+            {
+                src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%233a0ca3'/%3E%3Ctext x='50' y='67' text-anchor='middle' fill='white' font-size='50' font-weight='bold'%3EER%3C/text%3E%3C/svg%3E",
+                sizes: "any",
+                type: "image/svg+xml",
+                purpose: "any"
+            },
+            {
+                src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAALPSURBVHgB7Z3datesCwEYRrciIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIu4kiJg563y+EiLp+3DOeRZb+pVrXQAAAAAAAAAAAAAAAAAAAAAAAAAA8A/zcDjw+Xxms9mcz+fzr3y/39lsNnPqQzkcDpPJZDKZTKbJZDKZJpPJZJpMpk6TydRlMpk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdNk6jSZOk2mTpOp02TqNJk6TaZOk6nTZOo0mTpNpk6TqdPzBwAA///8wL+rAAAAAElFTkSuQmCC",
+                sizes: "192x192",
+                type: "image/png",
+                purpose: "any maskable"
+            }
+        ]
+    };
+    
+    // Check if manifest already exists, if not create it
+    if (!document.querySelector('link[rel="manifest"]')) {
+        const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = url;
+        document.head.appendChild(link);
+    }
+})();
+
+// Generate service worker dynamically
+(function generateServiceWorker() {
+    const swCode = `
+const CACHE_NAME = 'erd-presentation-v1';
 const urlsToCache = [
   '.',
-  'index.html'
+  'index.html',
+  'image/image.png'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
+      .then(cache => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
   );
 });
 
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
-      .then(response => response || fetch(event.request))
+      .then(response => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request).then(
+          response => {
+            if(!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME)
+              .then(cache => {
+                cache.put(event.request, responseToCache);
+              });
+            return response;
+          }
+        );
+      })
   );
 });
 
 self.addEventListener('activate', event => {
+  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
             return caches.delete(cacheName);
           }
         })
@@ -571,25 +703,20 @@ self.addEventListener('activate', event => {
   );
 });
 `;
-
-const swBlob = new Blob([swCode], {type: 'application/javascript'});
-const swURL = URL.createObjectURL(swBlob);
-
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register(swURL).then(reg => {
-        console.log('Service Worker registered successfully:', reg.scope);
-    }).catch(err => {
-        console.log('Service Worker registration failed:', err);
-    });
-}
-
-// Handle image error fallback
-const mainImageElem = document.getElementById('mainImage');
-if (mainImageElem) {
-    mainImageElem.onerror = function() {
-        this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"%3E%3Crect width="600" height="400" fill="%232d0a4a"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="white" font-size="24" dy=".3em"%3EER Diagram Preview%3C/text%3E%3C/svg%3E';
-    };
-}
+    
+    // Create blob URL for service worker
+    const blob = new Blob([swCode], {type: 'application/javascript'});
+    const swUrl = URL.createObjectURL(blob);
+    
+    // Register the service worker with the blob URL
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register(swUrl).then(registration => {
+            console.log('Dynamic Service Worker registered:', registration.scope);
+        }).catch(error => {
+            console.log('Dynamic SW registration failed:', error);
+        });
+    }
+})();
 </script>
 </body>
 </html>
