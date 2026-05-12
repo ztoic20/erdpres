@@ -267,7 +267,7 @@ img {
     <div class="slide">
         <div class="glass">
             <h1>Employee</h1>
-            <img id="mainImage" src="1.png" alt="ER Diagram">
+            <img class="zoomable-image" src="1.png" alt="ER Diagram">
         </div>
     </div>
 
@@ -275,7 +275,7 @@ img {
     <div class="slide">
         <div class="glass">
             <h1>Sales</h1>
-            <img id="mainImage" src="2.png" alt="ER Diagram">
+            <img class="zoomable-image" src="2.png" alt="ER Diagram">
         </div>
     </div>
 
@@ -283,7 +283,7 @@ img {
     <div class="slide">
         <div class="glass">
             <h1>Containers</h1>
-            <img id="mainImage" src="3.png" alt="ER Diagram">
+            <img class="zoomable-image" src="3.png" alt="ER Diagram">
         </div>
     </div>
 
@@ -291,7 +291,7 @@ img {
     <div class="slide">
         <div class="glass">
             <h1>Customers</h1>
-            <img id="mainImage" src="4.png" alt="ER Diagram">
+            <img class="zoomable-image" src="4.png" alt="ER Diagram">
         </div>
     </div>
 
@@ -299,7 +299,7 @@ img {
     <div class="slide">
         <div class="glass">
             <h1>Container History</h1>
-            <img id="mainImage" src="5.png" alt="ER Diagram">
+            <img class="zoomable-image" src="5.png" alt="ER Diagram">
         </div>
     </div>
     
@@ -314,7 +314,7 @@ img {
     <div class="slide">
         <div class="glass">
             <h1>Employee generates Sales</h1>
-            <img id="mainImage" src="6.png" alt="ER Diagram">
+            <img class="zoomable-image" src="6.png" alt="ER Diagram">
         </div>
     </div>
 
@@ -322,7 +322,7 @@ img {
     <div class="slide">
         <div class="glass">
             <h1>Sales contains Containers</h1>
-            <img id="mainImage" src="7.png" alt="ER Diagram">
+            <img class="zoomable-image" src="7.png" alt="ER Diagram">
         </div>
     </div>
 
@@ -330,7 +330,7 @@ img {
     <div class="slide">
         <div class="glass">
             <h1>Sales made by Customers</h1>
-            <img id="mainImage" src="8.png" alt="ER Diagram">
+            <img class="zoomable-image" src="8.png" alt="ER Diagram">
         </div>
     </div>
 
@@ -338,7 +338,7 @@ img {
     <div class="slide">
         <div class="glass">
             <h1>Containers recorded in Container History</h1>
-            <img id="mainImage" src="9.png" alt="ER Diagram">
+            <img class="zoomable-image" src="9.png" alt="ER Diagram">
         </div>
     </div>
 
@@ -347,7 +347,7 @@ img {
     <div class="slide">
         <div class="glass">
             <h1>ER Diagram</h1>
-            <img id="mainImage" src="image/image.png" alt="ER Diagram">
+            <img class="zoomable-image" src="image/image.png" alt="ER Diagram">
         </div>
     </div>
 
@@ -478,12 +478,11 @@ document.addEventListener('touchend', (e) => {
 });
 
 // Image zoom functionality
-function openFullscreen() {
+function openFullscreen(imageElement) {
     const fullscreenDiv = document.getElementById("fullscreenPage");
     const fullImg = document.getElementById("fullImage");
-    const mainImg = document.getElementById("mainImage");
-    if (mainImg && mainImg.src) {
-        fullImg.src = mainImg.src;
+    if (imageElement && imageElement.src) {
+        fullImg.src = imageElement.src;
     }
     fullscreenDiv.style.display = "flex";
     imageZoomActive = true;
@@ -496,7 +495,17 @@ function closeFullscreen() {
     document.body.style.overflow = '';
 }
 
-document.getElementById("mainImage").onclick = openFullscreen;
+// Attach click handlers to all zoomable images
+document.addEventListener('DOMContentLoaded', function() {
+    const zoomableImages = document.querySelectorAll('.zoomable-image');
+    zoomableImages.forEach(img => {
+        img.onclick = function(e) {
+            e.stopPropagation();
+            openFullscreen(this);
+        };
+    });
+});
+
 document.getElementById("fullscreenPage").onclick = closeFullscreen;
 
 // Initialize
@@ -596,12 +605,12 @@ if (!navigator.onLine) {
 }
 
 // Handle image error (fallback)
-const mainImage = document.getElementById('mainImage');
-if (mainImage) {
-    mainImage.onerror = function() {
+const zoomableImages = document.querySelectorAll('.zoomable-image');
+zoomableImages.forEach(image => {
+    image.onerror = function() {
         this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"%3E%3Crect width="400" height="300" fill="%232d0a4a"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="white" font-size="20" dy=".3em"%3EER Diagram Preview%3C/text%3E%3C/svg%3E';
     };
-}
+});
 </script>
 
 <!-- Dynamically generate manifest.json and sw.js -->
