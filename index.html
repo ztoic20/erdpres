@@ -95,6 +95,18 @@ img {
     cursor: pointer;
 }
 
+/* CLICKABLE TITLE */
+.clickable-title {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.clickable-title:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 20px rgba(224, 170, 255, 0.6);
+}
+
 /* FULLSCREEN PAGE - Image zoom modal */
 .fullscreen-page {
     position: fixed;
@@ -266,7 +278,7 @@ img {
     <!-- Slide 5 -->
     <div class="slide">
         <div class="glass">
-            <h1>Employee</h1>
+            <h1 data-popup="A.png">Employee</h1>
             <img class="zoomable-image" src="1.png" alt="ER Diagram">
         </div>
     </div>
@@ -274,7 +286,7 @@ img {
     <!-- Slide 6 -->
     <div class="slide">
         <div class="glass">
-            <h1>Sales</h1>
+            <h1 data-popup="B.png">Sales</h1>
             <img class="zoomable-image" src="2.png" alt="ER Diagram">
         </div>
     </div>
@@ -282,7 +294,7 @@ img {
     <!-- Slide 7 -->
     <div class="slide">
         <div class="glass">
-            <h1>Containers</h1>
+            <h1 data-popup="C.png">Containers</h1>
             <img class="zoomable-image" src="3.png" alt="ER Diagram">
         </div>
     </div>
@@ -290,7 +302,7 @@ img {
     <!-- Slide 8 -->
     <div class="slide">
         <div class="glass">
-            <h1>Customers</h1>
+            <h1 data-popup="D.png">Customers</h1>
             <img class="zoomable-image" src="4.png" alt="ER Diagram">
         </div>
     </div>
@@ -298,7 +310,7 @@ img {
     <!-- Slide 9 -->
     <div class="slide">
         <div class="glass">
-            <h1>Container History</h1>
+            <h1 data-popup="E.png">Container History</h1>
             <img class="zoomable-image" src="5.png" alt="ER Diagram">
         </div>
     </div>
@@ -313,7 +325,7 @@ img {
     <!-- Slide 11 -->
     <div class="slide">
         <div class="glass">
-            <h1>Employee generates Sales</h1>
+            <h1 data-popup="F.png">Employee generates Sales</h1>
             <img class="zoomable-image" src="6.png" alt="ER Diagram">
         </div>
     </div>
@@ -321,7 +333,7 @@ img {
     <!-- Slide 12 -->
     <div class="slide">
         <div class="glass">
-            <h1>Sales contains Containers</h1>
+            <h1 data-popup="G.png">Sales contains Containers</h1>
             <img class="zoomable-image" src="7.png" alt="ER Diagram">
         </div>
     </div>
@@ -329,7 +341,7 @@ img {
     <!-- Slide 13 -->
     <div class="slide">
         <div class="glass">
-            <h1>Sales made by Customers</h1>
+            <h1 data-popup="H.png">Sales made by Customers</h1>
             <img class="zoomable-image" src="8.png" alt="ER Diagram">
         </div>
     </div>
@@ -337,7 +349,7 @@ img {
     <!-- Slide 14 -->
     <div class="slide">
         <div class="glass">
-            <h1>Containers recorded in Container History</h1>
+            <h1 data-popup="I.png">Containers recorded in Container History</h1>
             <img class="zoomable-image" src="9.png" alt="ER Diagram">
         </div>
     </div>
@@ -346,7 +358,7 @@ img {
     <!-- Slide 15 -->
     <div class="slide">
         <div class="glass">
-            <h1>ER Diagram</h1>
+            <h1 data-popup="J.png">ER Diagram</h1>
             <img class="zoomable-image" src="image/image.png" alt="ER Diagram">
         </div>
     </div>
@@ -503,6 +515,28 @@ document.addEventListener('DOMContentLoaded', function() {
             e.stopPropagation();
             openFullscreen(this);
         };
+    });
+
+    // Make h1 titles clickable for slides with popup images
+    const slideTitles = document.querySelectorAll('.slide h1');
+    slideTitles.forEach(title => {
+        const popupImage = title.getAttribute('data-popup');
+        
+        if (popupImage) {
+            // Add clickable-title class to h1
+            title.classList.add('clickable-title');
+            
+            // Add click handler to open the popup image modal
+            title.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const fullscreenDiv = document.getElementById("fullscreenPage");
+                const fullImg = document.getElementById("fullImage");
+                fullImg.src = popupImage;
+                fullscreenDiv.style.display = "flex";
+                imageZoomActive = true;
+                document.body.style.overflow = 'hidden';
+            });
+        }
     });
 });
 
